@@ -5,6 +5,7 @@ import processing.core.PImage;
 import processing.core.PVector;
 
 public class LogicaJDos {
+	
 
 	private Main app;
 	private Personaje p;
