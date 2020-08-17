@@ -6,36 +6,48 @@ import processing.core.PImage;
 public class Main extends PApplet {
 
 	private PApplet app;
-	private LogicaJDos log;
-	private LogicaJUno logUno;
-	private int pantalla, puntaje;
-	private ArrayList<PImage> pantallas;
-	private int x,y;
+	//private LogicaJDos log;
+	//private LogicaJUno logUno;
+	private LogicaG logic;
+	private PImage inicio;
+	private boolean esta;
+	//private int pantalla, puntaje;
+	//private ArrayList<PImage> pantallas;
+	//private PImage p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14;
+	//private int x,y;
 	
 	public static void main(String[] args) {
 		PApplet.main("Main");
 	}
 
 	@Override
+	public void settings() {
+		size(1200, 700);
+	}
+	
+	@Override
 	public void setup() {
-		log = new LogicaJDos(this);
-		logUno = new LogicaJUno(this);
-		pantalla=14;
-		puntaje=0;
-		app = new PApplet();
-		x =0;
-		y=0;
-		pantallas = new ArrayList<PImage>();
 		
-		/*for(int i=0; i<15; i++) {
+		app = new PApplet();
+		logic = new LogicaG(this);
+
+		inicio = loadImage("../data/89.png");
+		esta = false;
+		//log = new LogicaJDos(this);
+		//logUno = new LogicaJUno(this);
+		//pantalla=0;
+		//puntaje=0;
+		//y=0;
+		
+		//p1 = app.loadImage("../hci2/data/0.png");
+		/*pantallas = new ArrayList<PImage>();
+		
+		for(int i=0; i<14; i++) {
 			pantallas.add(app.loadImage("../hci2/data/"+i+".png"));
 		}*/
 	}
 
-	@Override
-	public void settings() {
-		size(1200, 700);
-	}
+	
 
 	@Override
 	public void draw() {
@@ -45,9 +57,15 @@ public class Main extends PApplet {
 		ellipseMode(CENTER);
 		textSize(20);
 		
+		if(esta) {
+			logic.ejecutar();
+		}else {
+			image(inicio, 0, 0);
+		}
+		//app.image(p1,x, y);
 		//app.image(pantallas.get(pantalla), x, y);
 		
-		switch (pantalla) {
+		/*switch (pantalla) {
 		case 14:
 			
 			
@@ -91,11 +109,13 @@ public class Main extends PApplet {
 			text(puntaje,400,250);
 			text("veeeeee perdiste",200,90);
 			break;
-		}
+		}*/
 	}
 
 	@Override
 	public void mousePressed() {
+		if(!esta)esta = true;
+		if(esta)logic.cambioPantalla();
 		/*switch(pantalla) {
 	    case 0:
 	    	if(app.mouseX >  && app.mouseX< && app.mouseY> && app.mouseY<) {
@@ -130,8 +150,9 @@ public class Main extends PApplet {
 	
 	@Override
 	public void mouseReleased() {
-		log.released();
-		logUno.released();
+		//log.released();
+		//logUno.released();
+		if(esta)logic.mouseSuelto();
 	}
 	
 	

@@ -4,7 +4,7 @@ import processing.core.PVector;
 
 public class LogicaJUno {
 
-	private Main app;
+	private PApplet app;
 	private Personaje p;
 
 	private PImage fondo, bandera, negativo;
@@ -13,11 +13,11 @@ public class LogicaJUno {
 	private int puntaje;
 	private float meta;
 	
-	public LogicaJUno(Main app) {
+	public LogicaJUno(PApplet app) {
 		this.app = app;
 		p = new Personaje(app);
 		p.setMasa(1);
-		p.setPos(new PVector(50,300));
+		p.setPos(new PVector(50,420));
 		barra = new Barra();
 		
 		fondo = app.loadImage("/data/completo.png");
@@ -27,13 +27,13 @@ public class LogicaJUno {
 		gano = false;
 		puntaje = 0;
 		
-		meta = app.random((app.width/4 )*3, app.width);
+		meta = app.random((app.width/4 )*3, app.width-90);
 	}
 	
 	public void pintarMeta() {
 		app.imageMode(app.CORNER);
-		//app.image(negativo, 0, -215);
-		app.fill(0);
+		app.image(fondo, 0, -215);
+		app.fill(0,0,0,80);
 		app.rect(0, app.height-235 , app.width, 235);
 		
 		int b = 0;
@@ -53,6 +53,11 @@ public class LogicaJUno {
 	public void ejecutar() {
 		pintarMeta();
 		
+		if (p.getPos().x> app.width) {
+			gano=false;
+			nivelTerminado=true;
+		}
+		
 		p.dibujar();
 		app.fill(0,255,0);
 		app.text("vel\n" + (float) (p.getVel().mag() * 100) + "", 50, 20);
@@ -69,7 +74,7 @@ public class LogicaJUno {
 			p.aplicarFuerza(agotamineto);
 		}*/
 		
-		if(PApplet.dist(p.getPos().x, p.getPos().y, meta, app.height-233)<20) {
+		if(PApplet.dist(p.getPos().x, p.getPos().y, meta, app.height-240)<20) {
 			PVector agotamineto = p.getVel().copy();
 			agotamineto.normalize();
 			float agotaminetoForce = -0.008f;
@@ -82,7 +87,7 @@ public class LogicaJUno {
 		
 		PVector agotamineto = p.getVel().copy();
 		agotamineto.normalize();
-		float agotaminetoForce = -0.00000008f;
+		float agotaminetoForce = -0.002f;
 		agotamineto.mult(agotaminetoForce);
 		p.aplicarFuerza(agotamineto);
 		
@@ -92,7 +97,7 @@ public class LogicaJUno {
 		
 		////////////darle la masa inicial al personaje
 		if (app.mousePressed && p.getPos().x < 150) {
-			p.setMasa(p.getMasa()+0.002f);
+			p.setMasa(p.getMasa()+0.006f);
 			p.setCharnging(true);
 			barra.paint(0.1f);
 		}
@@ -118,7 +123,9 @@ public class LogicaJUno {
 	
 	public PVector attract(Personaje m) {
 	    PVector force = new PVector(1,0);      // Calcula la magnitud de la potencia
-	    force.mult(1/(m.getMasa()));                                  // obtener force vector --> magnitud * dir
+	    //force.mult(1/(m.getMasa()/3));                                  // obtener force vector --> magnitud * dir
+	    force.mult(3);
+	    force.div(m.getMasa());
 	    return force;
 	}
 	
@@ -162,6 +169,18 @@ public class LogicaJUno {
 
 	public int getPuntaje() {
 		return puntaje;
+	}
+	
+	public void reiniciar() {
+		p = new Personaje(app);
+		p.setMasa(1);
+		p.setPos(new PVector(50,420));
+		barra = new Barra();
+		nivelTerminado = false;
+		gano = false;
+		puntaje = 0;
+		
+		meta = app.random((app.width/4 )*3, app.width-90);
 	}
 	
 	private class Barra {

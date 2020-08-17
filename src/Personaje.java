@@ -1,9 +1,10 @@
+import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
 public class Personaje {
 
-	private Main app;
+	private PApplet app;
 
 	private PVector pos, vel, acel;
 	private float masa;
@@ -11,7 +12,7 @@ public class Personaje {
 
 	private boolean charging;
 
-	public Personaje(Main app) {
+	public Personaje(PApplet app) {
 		this.app = app;
 		img = app.loadImage("/data/carrito.png");
 		pos = new PVector(50, app.height / 2);

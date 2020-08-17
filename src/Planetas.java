@@ -4,13 +4,14 @@ import processing.core.PVector;
 
 public class Planetas {
 	
-	private Main main;
+	private PApplet main;
 	
 	private PVector pos;
 	private PImage img;
 	private float masa, gravedad, rango, volumen, r2, r;
+	private boolean color;
 	
-	public Planetas(Main main, float x, float y,float masa, PImage img) {
+	public Planetas(PApplet main, float x, float y,float masa, PImage img) {
 		this.main=main;
 		this.img = img;
 		pos = new PVector(x, y);
@@ -21,10 +22,16 @@ public class Planetas {
 		rango = volumen*4.5f;
 		r = rango/2;
 		r2 = rango;
+		color = false;
 	}
 	
 	public void pintar() {
-		main.fill(255,0,0,30);
+		main.noStroke();
+		if(color) {
+			main.fill(255,0,0,30);
+		}else {
+			main.fill(0,255,255,30);
+		}
 		main.ellipse(pos.x, pos.y, r, r);
 		//main.fill(0,0,0,10);
 		main.ellipse(pos.x, pos.y, r2, r2);
@@ -70,5 +77,9 @@ public class Planetas {
 	
 	public float getRango() {
 		return rango;
+	}
+
+	public void setColor(boolean b) {
+		color = b;		
 	}
 }
