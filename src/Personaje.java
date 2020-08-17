@@ -29,7 +29,8 @@ public class Personaje {
 		}
 		//app.ellipse(pos.x, pos.y, masa * 25, masa * 25);
 		app.imageMode(app.CENTER);
-		app.image(img, pos.x, pos.y, img.width/masa, img.height/masa);
+		//app.image(img, pos.x, pos.y, img.width/masa, img.height/masa);
+		app.image(img, pos.x, pos.y, (img.width/2)*masa, (img.height/2)*masa);
 	}
 
 	public void mover() {
@@ -37,15 +38,25 @@ public class Personaje {
 		pos.add(vel);
 		acel.mult(0);
 	}
+	
+	public void moverDos(PImage a) {
+		vel.add(acel);
+		if(a.get((int) pos.x,(int) (pos.y + 230 + vel.mag())) == -16777216) {
+			
+		}else{
+			pos.add(vel);
+		}
+		acel.mult(0);
+	}
 
 	public void aplicarFuerza(PVector fuerza) {
-		PVector f = PVector.div(fuerza, masa);
+		PVector f = PVector.mult(fuerza, masa);
 		// System.out.println(" "+f.mag());
 		acel.add(f);
 	}
 
 	public void rebotar() {
-		if (pos.x > app.width) {
+		if (pos.x> app.width) {
 			pos.x = app.width;
 			vel.x *= -1;
 		}
@@ -55,12 +66,13 @@ public class Personaje {
 			vel.x *= -1;
 		}
 
-		if (pos.y > app.height) {
-			pos.y = app.height;
+		if (pos.y> app.height-250) {
+			pos.y = app.height-250;
+			float t = vel.mag();
 			vel.y *= -1;
 		}
 
-		if (pos.y < 0) {
+		if (pos.y< 0) {
 			pos.y = 0;
 			vel.y *= -1;
 		}
@@ -81,9 +93,17 @@ public class Personaje {
 	public float getMasa() {
 		return masa;
 	}
+	
+	public float getTam() {
+		return (img.height/2)*masa;
+	}
 
 	public void setVel(int i) {
 		vel.mult(i);
+	}
+	
+	public void setMasa (float i) {
+		masa = i;
 	}
 
 	public void setCharnging(boolean b) {
@@ -92,6 +112,10 @@ public class Personaje {
 	
 	public boolean getCharnging() {
 		return charging;
+	}
+
+	public void setPos(PVector pVector) {
+		pos = pVector;
 	}
 
 }

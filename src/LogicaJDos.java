@@ -28,16 +28,31 @@ public class LogicaJDos {
 		gano = false;
 		puntaje = 0;
 		
+		PImage pUno = app.loadImage("/data/p1.png");
+		PImage pDos = app.loadImage("/data/p2.png");
+		PImage pTres = app.loadImage("/data/p3.png");
+		
+		
+		
 		//iniciar la cantidad de planetas necesarios
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 17; i++) {
 			float y = 0;
-
+			float random = app.random(1,20);
+			
 			if (i % 2 == 0) {
-				y = app.random(70, app.height / 4);
+				y = app.random(150, app.height / 3);
 			} else {
-				y = (app.random((app.height / 4) * 3, app.height - 70));
+				y = (app.random((app.height / 3) * 2, app.height - 150));
 			}
-			planetas.add(new Planetas(app, i * (app.width / 30) + 190, y));
+			
+			if(random<20/3) {
+				planetas.add(new Planetas(app, i * (app.width / 24) + 200, y, random,pTres));
+			}else if(random>(20/3)*2) {
+				planetas.add(new Planetas(app, i * (app.width / 24) + 200, y, random,pDos));
+			}else {
+				planetas.add(new Planetas(app, i * (app.width / 24) + 200, y, random,pUno));
+			}
+			
 		}
 	}
 	
@@ -46,10 +61,10 @@ public class LogicaJDos {
 		app.image(fondo, 0, 0);
 		app.imageMode(app.CENTER);
 		app.fill(200,200,200,40);
-		app.rect(700, 0, app.width, app.height);
+		app.rect(1100, 0, app.width, app.height);
 		app.stroke(255, 0, 0);
 		app.strokeWeight(2);
-		app.line(750, 0, 750, app.height);
+		app.line(1150, 0, 1150, app.height);
 		app.noStroke();
 		app.textSize(15);
 		app.textLeading(13);
@@ -93,7 +108,7 @@ public class LogicaJDos {
 		}
 		
 		//Aplicar fricciòn si el personaje està en la meta
-		if (p.getPos().x > 600) {
+		if (p.getPos().x > 1100) {
 			PVector agotamineto = p.getVel().copy();
 			agotamineto.normalize();
 			float agotaminetoForce = -0.008f;
@@ -116,7 +131,7 @@ public class LogicaJDos {
 
 	private void isGanar() {
 		if (p.getPos().x > 150 && p.getVel().mag() <= 0.004f) {
-			if (p.getPos().x > 700 && p.getPos().x < app.width) {
+			if (p.getPos().x > 1100 && p.getPos().x < app.width) {
 				gano = true;
 				puntaje = calcular();
 				nivelTerminado = true;
@@ -134,7 +149,7 @@ public class LogicaJDos {
 	}
 
 	private int calcular() {
-		float val = Math.abs(750 - p.getPos().x);
+		float val = Math.abs(1150 - p.getPos().x);
 		if (val > 50)
 			return 0;
 		return (int) PApplet.map(val, 0, 50, 30, 20);
